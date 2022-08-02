@@ -2,8 +2,8 @@
 if(BUILD_CURL OR BUILD_OPENSSL OR BUILD_ZLIB)
     include(ExternalProject)
 
-    set(EXTERNAL_CXX_FLAGS "-Wno-unused-private-field")
-    set(EXTERNAL_C_FLAGS "")
+    set(EXTERNAL_CXX_FLAGS "-Wno-unused-private-field -w")
+    set(EXTERNAL_C_FLAGS "-w")
 
     set(BASE_SDK_DIR ${CMAKE_BINARY_DIR} CACHE STRING "Android build" FORCE)
 
