@@ -361,6 +361,8 @@
 #include <aws/s3/model/PutObjectLegalHoldResult.h>
 #include <aws/s3/model/PutObjectLockConfigurationRequest.h>
 #include <aws/s3/model/PutObjectLockConfigurationResult.h>
+#include <aws/s3/model/PutObjectRDMARequest.h>
+#include <aws/s3/model/PutObjectRDMAResult.h>
 #include <aws/s3/model/PutObjectRequest.h>
 #include <aws/s3/model/PutObjectResult.h>
 #include <aws/s3/model/PutObjectRetentionRequest.h>
@@ -449,6 +451,8 @@
 #include <aws/s3/model/UpdateObjectEncryptionResult.h>
 #include <aws/s3/model/UploadPartCopyRequest.h>
 #include <aws/s3/model/UploadPartCopyResult.h>
+#include <aws/s3/model/UploadPartRDMARequest.h>
+#include <aws/s3/model/UploadPartRDMAResult.h>
 #include <aws/s3/model/UploadPartRequest.h>
 #include <aws/s3/model/UploadPartResult.h>
 #include <aws/s3/model/VersioningConfiguration.h>
