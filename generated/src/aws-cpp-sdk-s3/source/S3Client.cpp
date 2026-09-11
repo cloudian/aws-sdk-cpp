@@ -121,6 +121,7 @@
 #include <aws/s3/model/PutObjectAnnotationRequest.h>
 #include <aws/s3/model/PutObjectLegalHoldRequest.h>
 #include <aws/s3/model/PutObjectLockConfigurationRequest.h>
+#include <aws/s3/model/PutObjectRDMARequest.h>
 #include <aws/s3/model/PutObjectRequest.h>
 #include <aws/s3/model/PutObjectRetentionRequest.h>
 #include <aws/s3/model/PutObjectTaggingRequest.h>
@@ -133,6 +134,7 @@
 #include <aws/s3/model/UpdateBucketMetadataJournalTableConfigurationRequest.h>
 #include <aws/s3/model/UpdateObjectEncryptionRequest.h>
 #include <aws/s3/model/UploadPartCopyRequest.h>
+#include <aws/s3/model/UploadPartRDMARequest.h>
 #include <aws/s3/model/UploadPartRequest.h>
 #include <aws/s3/model/WriteGetObjectResponseRequest.h>
 #include <smithy/tracing/TracingUtils.h>
@@ -1464,7 +1466,7 @@ GetBucketWebsiteOutcome S3Client::GetBucketWebsite(const GetBucketWebsiteRequest
                             : GetBucketWebsiteOutcome(std::move(result.GetError()));
 }
 
-GetObjectOutcome S3Client::GetObject(const GetObjectRequest& request) const {
+GetObjectOutcome S3Client::GetObjectTCP(const GetObjectRequest& request) const {
   AWS_OPERATION_GUARD(GetObject);
   AWS_OPERATION_CHECK_PTR(m_endpointProvider, GetObject, CoreErrors, CoreErrors::ENDPOINT_RESOLUTION_FAILURE);
   if (!request.BucketHasBeenSet()) {
@@ -1510,17 +1512,17 @@ GetObjectOutcome S3Client::GetObject(const GetObjectRequest& request) const {
        {TracingUtils::SMITHY_SERVICE_DIMENSION, this->GetServiceClientName()}});
 }
 
-GetObjectOutcomeCallable S3Client::GetObjectCallable(const GetObjectRequest& request) const {
+GetObjectOutcomeCallable S3Client::GetObjectTCPCallable(const GetObjectRequest& request) const {
   auto task =
-      Aws::MakeShared<std::packaged_task<GetObjectOutcome()> >(ALLOCATION_TAG, [this, request]() { return this->GetObject(request); });
+      Aws::MakeShared<std::packaged_task<GetObjectOutcome()> >(ALLOCATION_TAG, [this, request]() { return this->GetObjectTCP(request); });
   auto packagedFunction = [task]() { (*task)(); };
   m_clientConfiguration.executor->Submit(packagedFunction);
   return task->get_future();
 }
 
-void S3Client::GetObjectAsync(const GetObjectRequest& request, const GetObjectResponseReceivedHandler& handler,
+void S3Client::GetObjectTCPAsync(const GetObjectRequest& request, const GetObjectResponseReceivedHandler& handler,
                               const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const {
-  m_clientConfiguration.executor->Submit([this, request, handler, context]() { handler(this, request, GetObject(request), context); });
+  m_clientConfiguration.executor->Submit([this, request, handler, context]() { handler(this, request, GetObjectTCP(request), context); });
 }
 
 GetObjectAclOutcome S3Client::GetObjectAcl(const GetObjectAclRequest& request) const {
@@ -2428,7 +2430,7 @@ PutBucketWebsiteOutcome S3Client::PutBucketWebsite(const PutBucketWebsiteRequest
                             : PutBucketWebsiteOutcome(std::move(result.GetError()));
 }
 
-PutObjectOutcome S3Client::PutObject(const PutObjectRequest& request) const {
+PutObjectOutcome S3Client::PutObjectTCP(const PutObjectRequest& request) const {
   if (!request.BucketHasBeenSet()) {
     AWS_LOGSTREAM_ERROR("PutObject", "Required field: Bucket, is not set");
     return PutObjectOutcome(
@@ -2449,17 +2451,17 @@ PutObjectOutcome S3Client::PutObject(const PutObjectRequest& request) const {
   return result.IsSuccess() ? PutObjectOutcome(result.GetResultWithOwnership()) : PutObjectOutcome(std::move(result.GetError()));
 }
 
-PutObjectOutcomeCallable S3Client::PutObjectCallable(const PutObjectRequest& request) const {
+PutObjectOutcomeCallable S3Client::PutObjectTCPCallable(const PutObjectRequest& request) const {
   auto task =
-      Aws::MakeShared<std::packaged_task<PutObjectOutcome()> >(ALLOCATION_TAG, [this, request]() { return this->PutObject(request); });
+      Aws::MakeShared<std::packaged_task<PutObjectOutcome()> >(ALLOCATION_TAG, [this, request]() { return this->PutObjectTCP(request); });
   auto packagedFunction = [task]() { (*task)(); };
   m_clientConfiguration.executor->Submit(packagedFunction);
   return task->get_future();
 }
 
-void S3Client::PutObjectAsync(const PutObjectRequest& request, const PutObjectResponseReceivedHandler& handler,
+void S3Client::PutObjectTCPAsync(const PutObjectRequest& request, const PutObjectResponseReceivedHandler& handler,
                               const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context) const {
-  m_clientConfiguration.executor->Submit([this, request, handler, context]() { handler(this, request, PutObject(request), context); });
+  m_clientConfiguration.executor->Submit([this, request, handler, context]() { handler(this, request, PutObjectTCP(request), context); });
 }
 
 PutObjectAclOutcome S3Client::PutObjectAcl(const PutObjectAclRequest& request) const {
@@ -2558,6 +2560,27 @@ PutObjectLockConfigurationOutcome S3Client::PutObjectLockConfiguration(const Put
   auto result = InvokeServiceOperation(request, uriResolver, request.GetBucket(), Aws::Http::HttpMethod::HTTP_PUT);
   return result.IsSuccess() ? PutObjectLockConfigurationOutcome(result.GetResultWithOwnership())
                             : PutObjectLockConfigurationOutcome(std::move(result.GetError()));
+}
+
+PutObjectRDMAOutcome S3Client::PutObjectRDMA(const PutObjectRDMARequest& request) const {
+  if (!request.BucketHasBeenSet()) {
+    AWS_LOGSTREAM_ERROR("PutObjectRDMA", "Required field: Bucket, is not set");
+    return PutObjectRDMAOutcome(
+        Aws::Client::AWSError<S3Errors>(S3Errors::MISSING_PARAMETER, "MISSING_PARAMETER", "Missing required field [Bucket]", false));
+  }
+  if (!request.KeyHasBeenSet()) {
+    AWS_LOGSTREAM_ERROR("PutObjectRDMA", "Required field: Key, is not set");
+    return PutObjectRDMAOutcome(
+        Aws::Client::AWSError<S3Errors>(S3Errors::MISSING_PARAMETER, "MISSING_PARAMETER", "Missing required field [Key]", false));
+  }
+
+  auto uriResolver = [&](Aws::Endpoint::ResolveEndpointOutcome& endpointResolutionOutcome) {
+    (void)endpointResolutionOutcome;
+    endpointResolutionOutcome.GetResult().AddPathSegments(request.GetKey());
+  };
+
+  auto result = InvokeServiceOperation(request, uriResolver, request.GetBucket(), Aws::Http::HttpMethod::HTTP_PUT);
+  return result.IsSuccess() ? PutObjectRDMAOutcome(result.GetResultWithOwnership()) : PutObjectRDMAOutcome(std::move(result.GetError()));
 }
 
 PutObjectRetentionOutcome S3Client::PutObjectRetention(const PutObjectRetentionRequest& request) const {
@@ -2821,7 +2844,7 @@ UpdateObjectEncryptionOutcome S3Client::UpdateObjectEncryption(const UpdateObjec
                             : UpdateObjectEncryptionOutcome(std::move(result.GetError()));
 }
 
-UploadPartOutcome S3Client::UploadPart(const UploadPartRequest& request) const {
+UploadPartOutcome S3Client::UploadPartTCP(const UploadPartRequest& request) const {
   if (!request.BucketHasBeenSet()) {
     AWS_LOGSTREAM_ERROR("UploadPart", "Required field: Bucket, is not set");
     return UploadPartOutcome(
@@ -2886,6 +2909,37 @@ UploadPartCopyOutcome S3Client::UploadPartCopy(const UploadPartCopyRequest& requ
 
   auto result = InvokeServiceOperation(request, uriResolver, request.GetBucket(), Aws::Http::HttpMethod::HTTP_PUT);
   return result.IsSuccess() ? UploadPartCopyOutcome(result.GetResultWithOwnership()) : UploadPartCopyOutcome(std::move(result.GetError()));
+}
+
+UploadPartRDMAOutcome S3Client::UploadPartRDMA(const UploadPartRDMARequest& request) const {
+  if (!request.BucketHasBeenSet()) {
+    AWS_LOGSTREAM_ERROR("UploadPartRDMA", "Required field: Bucket, is not set");
+    return UploadPartRDMAOutcome(
+        Aws::Client::AWSError<S3Errors>(S3Errors::MISSING_PARAMETER, "MISSING_PARAMETER", "Missing required field [Bucket]", false));
+  }
+  if (!request.KeyHasBeenSet()) {
+    AWS_LOGSTREAM_ERROR("UploadPartRDMA", "Required field: Key, is not set");
+    return UploadPartRDMAOutcome(
+        Aws::Client::AWSError<S3Errors>(S3Errors::MISSING_PARAMETER, "MISSING_PARAMETER", "Missing required field [Key]", false));
+  }
+  if (!request.PartNumberHasBeenSet()) {
+    AWS_LOGSTREAM_ERROR("UploadPartRDMA", "Required field: PartNumber, is not set");
+    return UploadPartRDMAOutcome(
+        Aws::Client::AWSError<S3Errors>(S3Errors::MISSING_PARAMETER, "MISSING_PARAMETER", "Missing required field [PartNumber]", false));
+  }
+  if (!request.UploadIdHasBeenSet()) {
+    AWS_LOGSTREAM_ERROR("UploadPartRDMA", "Required field: UploadId, is not set");
+    return UploadPartRDMAOutcome(
+        Aws::Client::AWSError<S3Errors>(S3Errors::MISSING_PARAMETER, "MISSING_PARAMETER", "Missing required field [UploadId]", false));
+  }
+
+  auto uriResolver = [&](Aws::Endpoint::ResolveEndpointOutcome& endpointResolutionOutcome) {
+    (void)endpointResolutionOutcome;
+    endpointResolutionOutcome.GetResult().AddPathSegments(request.GetKey());
+  };
+
+  auto result = InvokeServiceOperation(request, uriResolver, request.GetBucket(), Aws::Http::HttpMethod::HTTP_PUT);
+  return result.IsSuccess() ? UploadPartRDMAOutcome(result.GetResultWithOwnership()) : UploadPartRDMAOutcome(std::move(result.GetError()));
 }
 
 WriteGetObjectResponseOutcome S3Client::WriteGetObjectResponse(const WriteGetObjectResponseRequest& request) const {

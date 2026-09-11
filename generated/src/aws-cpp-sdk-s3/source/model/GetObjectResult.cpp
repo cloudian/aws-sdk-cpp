@@ -310,6 +310,18 @@ GetObjectResult& GetObjectResult::operator=(Aws::AmazonWebServiceResult<Response
     m_objectLockEventHoldDurationYearsHasBeenSet = true;
   }
 
+  const auto& rDMAReplyIter = headers.find("x-amz-rdma-reply");
+  if (rDMAReplyIter != headers.end()) {
+    m_rDMAReply = StringUtils::ConvertToInt32(rDMAReplyIter->second.c_str());
+    m_rDMAReplyHasBeenSet = true;
+  }
+
+  const auto& rDMABytesTransferredIter = headers.find("x-amz-rdma-bytes-transferred");
+  if (rDMABytesTransferredIter != headers.end()) {
+    m_rDMABytesTransferred = StringUtils::ConvertToInt64(rDMABytesTransferredIter->second.c_str());
+    m_rDMABytesTransferredHasBeenSet = true;
+  }
+
   const auto& id2Iter = headers.find("x-amz-id-2");
   if (id2Iter != headers.end()) {
     m_id2 = id2Iter->second;
