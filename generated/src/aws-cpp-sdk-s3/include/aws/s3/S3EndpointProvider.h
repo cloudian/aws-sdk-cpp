@@ -21,7 +21,7 @@ using Aws::Endpoint::EndpointProviderBase;
 
 class AWS_S3_API S3ClientContextParameters : public Aws::Endpoint::ClientContextParameters {
  public:
-  virtual ~S3ClientContextParameters() {};
+  virtual ~S3ClientContextParameters(){};
 
   /**
    * Forces this client to use path-style addressing for buckets.
@@ -57,7 +57,7 @@ class AWS_S3_API S3ClientContextParameters : public Aws::Endpoint::ClientContext
 
 class AWS_S3_API S3BuiltInParameters : public Aws::Endpoint::BuiltInParameters {
  public:
-  virtual ~S3BuiltInParameters() {};
+  virtual ~S3BuiltInParameters(){};
   using Aws::Endpoint::BuiltInParameters::SetFromClientConfiguration;
   virtual void SetFromClientConfiguration(const S3ClientConfiguration& config);
   virtual void SetFromClientConfiguration(const S3ClientConfiguration& config, const Aws::String& serviceName);
