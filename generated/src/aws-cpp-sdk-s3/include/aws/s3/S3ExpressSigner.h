@@ -22,7 +22,7 @@ class AWS_S3_API S3ExpressSigner : public Aws::Client::AWSAuthV4Signer {
                   const Aws::String &region, PayloadSigningPolicy signingPolicy = PayloadSigningPolicy::RequestDependent,
                   bool urlEscapePath = true, Aws::Auth::AWSSigningAlgorithm signingAlgorithm = Aws::Auth::AWSSigningAlgorithm::SIGV4);
 
-  virtual ~S3ExpressSigner() {};
+  virtual ~S3ExpressSigner(){};
 
   const char *GetName() const override;
 
