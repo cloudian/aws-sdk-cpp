@@ -80,3 +80,32 @@ install (FILES ${AWS_S3_MODEL_HEADERS} DESTINATION ${INCLUDE_DIRECTORY}/aws/s3/m
 do_packaging()
 
 
+
+set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME cloudian-aws-cpp-sdk-s3)
+
+set(_pc_file "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc")
+if(EXISTS "${_pc_file}")
+    file(READ "${_pc_file}" _pc_contents)
+    string(REPLACE "-l${PROJECT_NAME}" "-lcloudian-${PROJECT_NAME}" _pc_contents "${_pc_contents}")
+    file(WRITE "${_pc_file}" "${_pc_contents}")
+endif()
+
+find_package(CUDAToolkit 13.1 REQUIRED)
+find_path(NVIDIA_CUOBJ_INCLUDE_DIR
+    NAMES cuobjclient.h
+    HINTS ${CUDAToolkit_INCLUDE_DIRS}
+    DOC "Directory containing NVIDIA's cuobjclient.h (from GPUDirect Storage)"
+    REQUIRED
+)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${CMAKE_DL_LIBS})
+target_include_directories(${PROJECT_NAME} PRIVATE ${NVIDIA_CUOBJ_INCLUDE_DIR})
+
+option(S3_CLIENT_DISABLE_TRANSPARENT_RDMA "Disable transparent RDMA in GetObject/PutObject/UploadPart; always use TCP" OFF)
+if(S3_CLIENT_DISABLE_TRANSPARENT_RDMA)
+    # PUBLIC, not PRIVATE: IsTransparentRDMADisabled() is a constexpr
+    # inline function in the public S3ClientRDMA.h header, so this
+    # define must reach any consumer that includes it too - otherwise
+    # their own inline copy of that function silently disagrees with
+    # how this library itself was actually built.
+    target_compile_definitions(${PROJECT_NAME} PUBLIC S3_CLIENT_DISABLE_TRANSPARENT_RDMA)
+endif()

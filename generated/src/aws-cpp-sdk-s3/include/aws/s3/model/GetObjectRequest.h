@@ -550,6 +550,22 @@ class GetObjectRequest : public S3Request {
 
   ///@{
 
+  inline const Aws::String& GetRDMAToken() const { return m_rDMAToken; }
+  inline bool RDMATokenHasBeenSet() const { return m_rDMATokenHasBeenSet; }
+  template <typename RDMATokenT = Aws::String>
+  void SetRDMAToken(RDMATokenT&& value) {
+    m_rDMATokenHasBeenSet = true;
+    m_rDMAToken = std::forward<RDMATokenT>(value);
+  }
+  template <typename RDMATokenT = Aws::String>
+  GetObjectRequest& WithRDMAToken(RDMATokenT&& value) {
+    SetRDMAToken(std::forward<RDMATokenT>(value));
+    return *this;
+  }
+  ///@}
+
+  ///@{
+
   inline const Aws::Map<Aws::String, Aws::String>& GetCustomizedAccessLogTag() const { return m_customizedAccessLogTag; }
   inline bool CustomizedAccessLogTagHasBeenSet() const { return m_customizedAccessLogTagHasBeenSet; }
   template <typename CustomizedAccessLogTagT = Aws::Map<Aws::String, Aws::String>>
@@ -612,6 +628,8 @@ class GetObjectRequest : public S3Request {
 
   ChecksumMode m_checksumMode{ChecksumMode::NOT_SET};
 
+  Aws::String m_rDMAToken;
+
   Aws::Map<Aws::String, Aws::String> m_customizedAccessLogTag;
   bool m_bucketHasBeenSet = false;
   bool m_ifMatchHasBeenSet = false;
@@ -634,6 +652,7 @@ class GetObjectRequest : public S3Request {
   bool m_partNumberHasBeenSet = false;
   bool m_expectedBucketOwnerHasBeenSet = false;
   bool m_checksumModeHasBeenSet = false;
+  bool m_rDMATokenHasBeenSet = false;
   bool m_customizedAccessLogTagHasBeenSet = false;
 };
 
