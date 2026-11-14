@@ -144,6 +144,12 @@ Aws::Http::HeaderValueCollection GetObjectRequest::GetRequestSpecificHeaders() c
     headers.emplace("x-amz-checksum-mode", ChecksumModeMapper::GetNameForChecksumMode(m_checksumMode));
   }
 
+  if (m_rDMATokenHasBeenSet) {
+    ss << m_rDMAToken;
+    headers.emplace("x-amz-rdma-token", ss.str());
+    ss.str("");
+  }
+
   return headers;
 }
 
