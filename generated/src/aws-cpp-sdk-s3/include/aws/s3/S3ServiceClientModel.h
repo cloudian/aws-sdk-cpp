@@ -84,6 +84,7 @@
 #include <aws/s3/model/PutObjectAnnotationResult.h>
 #include <aws/s3/model/PutObjectLegalHoldResult.h>
 #include <aws/s3/model/PutObjectLockConfigurationResult.h>
+#include <aws/s3/model/PutObjectRDMAResult.h>
 #include <aws/s3/model/PutObjectResult.h>
 #include <aws/s3/model/PutObjectRetentionResult.h>
 #include <aws/s3/model/PutObjectTaggingResult.h>
@@ -91,6 +92,7 @@
 #include <aws/s3/model/RestoreObjectResult.h>
 #include <aws/s3/model/UpdateObjectEncryptionResult.h>
 #include <aws/s3/model/UploadPartCopyResult.h>
+#include <aws/s3/model/UploadPartRDMAResult.h>
 #include <aws/s3/model/UploadPartResult.h>
 /* End of service model headers required in S3Client header */
 
@@ -223,6 +225,7 @@ class PutObjectAclRequest;
 class PutObjectAnnotationRequest;
 class PutObjectLegalHoldRequest;
 class PutObjectLockConfigurationRequest;
+class PutObjectRDMARequest;
 class PutObjectRetentionRequest;
 class PutObjectTaggingRequest;
 class PutPublicAccessBlockRequest;
@@ -235,6 +238,7 @@ class UpdateBucketMetadataJournalTableConfigurationRequest;
 class UpdateObjectEncryptionRequest;
 class UploadPartRequest;
 class UploadPartCopyRequest;
+class UploadPartRDMARequest;
 class WriteGetObjectResponseRequest;
 /* End of service model forward declarations required in S3Client header */
 
@@ -338,6 +342,7 @@ typedef Aws::Utils::Outcome<PutObjectAclResult, S3Error> PutObjectAclOutcome;
 typedef Aws::Utils::Outcome<PutObjectAnnotationResult, S3Error> PutObjectAnnotationOutcome;
 typedef Aws::Utils::Outcome<PutObjectLegalHoldResult, S3Error> PutObjectLegalHoldOutcome;
 typedef Aws::Utils::Outcome<PutObjectLockConfigurationResult, S3Error> PutObjectLockConfigurationOutcome;
+typedef Aws::Utils::Outcome<PutObjectRDMAResult, S3Error> PutObjectRDMAOutcome;
 typedef Aws::Utils::Outcome<PutObjectRetentionResult, S3Error> PutObjectRetentionOutcome;
 typedef Aws::Utils::Outcome<PutObjectTaggingResult, S3Error> PutObjectTaggingOutcome;
 typedef Aws::Utils::Outcome<Aws::NoResult, S3Error> PutPublicAccessBlockOutcome;
@@ -350,6 +355,7 @@ typedef Aws::Utils::Outcome<Aws::NoResult, S3Error> UpdateBucketMetadataJournalT
 typedef Aws::Utils::Outcome<UpdateObjectEncryptionResult, S3Error> UpdateObjectEncryptionOutcome;
 typedef Aws::Utils::Outcome<UploadPartResult, S3Error> UploadPartOutcome;
 typedef Aws::Utils::Outcome<UploadPartCopyResult, S3Error> UploadPartCopyOutcome;
+typedef Aws::Utils::Outcome<UploadPartRDMAResult, S3Error> UploadPartRDMAOutcome;
 typedef Aws::Utils::Outcome<Aws::NoResult, S3Error> WriteGetObjectResponseOutcome;
 /* End of service model Outcome class definitions */
 
@@ -453,6 +459,7 @@ typedef std::future<PutObjectAclOutcome> PutObjectAclOutcomeCallable;
 typedef std::future<PutObjectAnnotationOutcome> PutObjectAnnotationOutcomeCallable;
 typedef std::future<PutObjectLegalHoldOutcome> PutObjectLegalHoldOutcomeCallable;
 typedef std::future<PutObjectLockConfigurationOutcome> PutObjectLockConfigurationOutcomeCallable;
+typedef std::future<PutObjectRDMAOutcome> PutObjectRDMAOutcomeCallable;
 typedef std::future<PutObjectRetentionOutcome> PutObjectRetentionOutcomeCallable;
 typedef std::future<PutObjectTaggingOutcome> PutObjectTaggingOutcomeCallable;
 typedef std::future<PutPublicAccessBlockOutcome> PutPublicAccessBlockOutcomeCallable;
@@ -466,6 +473,7 @@ typedef std::future<UpdateBucketMetadataJournalTableConfigurationOutcome> Update
 typedef std::future<UpdateObjectEncryptionOutcome> UpdateObjectEncryptionOutcomeCallable;
 typedef std::future<UploadPartOutcome> UploadPartOutcomeCallable;
 typedef std::future<UploadPartCopyOutcome> UploadPartCopyOutcomeCallable;
+typedef std::future<UploadPartRDMAOutcome> UploadPartRDMAOutcomeCallable;
 typedef std::future<WriteGetObjectResponseOutcome> WriteGetObjectResponseOutcomeCallable;
 /* End of service model Outcome callable definitions */
 }  // namespace Model
@@ -799,6 +807,9 @@ typedef std::function<void(const S3Client*, const Model::PutObjectLegalHoldReque
 typedef std::function<void(const S3Client*, const Model::PutObjectLockConfigurationRequest&,
                            const Model::PutObjectLockConfigurationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&)>
     PutObjectLockConfigurationResponseReceivedHandler;
+typedef std::function<void(const S3Client*, const Model::PutObjectRDMARequest&, const Model::PutObjectRDMAOutcome&,
+                           const std::shared_ptr<const Aws::Client::AsyncCallerContext>&)>
+    PutObjectRDMAResponseReceivedHandler;
 typedef std::function<void(const S3Client*, const Model::PutObjectRetentionRequest&, const Model::PutObjectRetentionOutcome&,
                            const std::shared_ptr<const Aws::Client::AsyncCallerContext>&)>
     PutObjectRetentionResponseReceivedHandler;
@@ -838,6 +849,9 @@ typedef std::function<void(const S3Client*, const Model::UploadPartRequest&, con
 typedef std::function<void(const S3Client*, const Model::UploadPartCopyRequest&, const Model::UploadPartCopyOutcome&,
                            const std::shared_ptr<const Aws::Client::AsyncCallerContext>&)>
     UploadPartCopyResponseReceivedHandler;
+typedef std::function<void(const S3Client*, const Model::UploadPartRDMARequest&, const Model::UploadPartRDMAOutcome&,
+                           const std::shared_ptr<const Aws::Client::AsyncCallerContext>&)>
+    UploadPartRDMAResponseReceivedHandler;
 typedef std::function<void(const S3Client*, const Model::WriteGetObjectResponseRequest&, const Model::WriteGetObjectResponseOutcome&,
                            const std::shared_ptr<const Aws::Client::AsyncCallerContext>&)>
     WriteGetObjectResponseResponseReceivedHandler;
