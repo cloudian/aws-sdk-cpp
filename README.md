@@ -3,6 +3,16 @@ The AWS SDK for C++ provides a modern C++ (version C++ 11 or later) interface fo
 
 AWS SDK for C++ is now in General Availability and recommended for production use. We invite our customers to join the development efforts by submitting pull requests and sending us feedback and ideas via GitHub Issues.
 
+
+<!-- BEGIN cuobj-aws-s3-sdk-cpp RDMA section - managed by scripts/update-aws-sdk-fork.py in https://github.com/cloudian/cuobj-aws-s3-sdk-cpp, do not edit by hand -->
+## RDMA support
+
+This fork tracks the upstream AWS SDK for C++, with added support for
+RDMA-accelerated S3 `GetObject`/`PutObject`/`UploadPart` operations using
+NVIDIA's cuobj/GPUDirect Storage client library. See
+[S3RDMA.md](S3RDMA.md) for the added functionality and build options.
+<!-- END cuobj-aws-s3-sdk-cpp RDMA section -->
+
 ## __Jump To:__
 * [Change log](https://github.com/aws/aws-sdk-cpp/tags)
 * [API Docs](https://sdk.amazonaws.com/cpp/api/LATEST/index.html)
