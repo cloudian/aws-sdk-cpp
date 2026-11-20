@@ -900,6 +900,32 @@ class GetObjectResult {
 
   ///@{
 
+  inline int GetRDMAReply() const { return m_rDMAReply; }
+  inline void SetRDMAReply(int value) {
+    m_rDMAReplyHasBeenSet = true;
+    m_rDMAReply = value;
+  }
+  inline GetObjectResult& WithRDMAReply(int value) {
+    SetRDMAReply(value);
+    return *this;
+  }
+  ///@}
+
+  ///@{
+
+  inline long long GetRDMABytesTransferred() const { return m_rDMABytesTransferred; }
+  inline void SetRDMABytesTransferred(long long value) {
+    m_rDMABytesTransferredHasBeenSet = true;
+    m_rDMABytesTransferred = value;
+  }
+  inline GetObjectResult& WithRDMABytesTransferred(long long value) {
+    SetRDMABytesTransferred(value);
+    return *this;
+  }
+  ///@}
+
+  ///@{
+
   inline const Aws::String& GetId2() const { return m_id2; }
   template <typename Id2T = Aws::String>
   void SetId2(Id2T&& value) {
@@ -1039,6 +1065,10 @@ class GetObjectResult {
 
   int m_objectLockEventHoldDurationYears{0};
 
+  int m_rDMAReply{0};
+
+  long long m_rDMABytesTransferred{0};
+
   Aws::String m_id2;
 
   Aws::String m_requestId;
@@ -1091,6 +1121,8 @@ class GetObjectResult {
   bool m_objectLockEventHoldHasBeenSet = false;
   bool m_objectLockEventHoldDurationDaysHasBeenSet = false;
   bool m_objectLockEventHoldDurationYearsHasBeenSet = false;
+  bool m_rDMAReplyHasBeenSet = false;
+  bool m_rDMABytesTransferredHasBeenSet = false;
   bool m_id2HasBeenSet = false;
   bool m_requestIdHasBeenSet = false;
   bool m_expiresStringHasBeenSet = false;
